@@ -27,7 +27,9 @@ import {
   Star,
   Sparkles,
   Building,
-  Timer
+  Timer,
+  Mail,
+  Phone
 } from 'lucide-react';
 
 const TripDetails = () => {

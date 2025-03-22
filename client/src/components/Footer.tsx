@@ -9,14 +9,12 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-10 mb-20">
           {/* Logo and Company Info */}
           <div className="md:col-span-2">
-            <Link href="/">
-              <a className="flex items-center mb-6">
-                <Rocket className="text-[#00D1FF] mr-2 h-6 w-6" />
-                <span className="font-orbitron text-2xl font-bold tracking-wider">
-                  CELESTIAL<span className="text-[#00D1FF]">VOYAGES</span>
-                </span>
-              </a>
-            </Link>
+            <div className="flex items-center mb-6 cursor-pointer" onClick={() => window.location.href = '/'}>
+              <Rocket className="text-[#00D1FF] mr-2 h-6 w-6" />
+              <span className="font-orbitron text-2xl font-bold tracking-wider">
+                CELESTIAL<span className="text-[#00D1FF]">VOYAGES</span>
+              </span>
+            </div>
             <p className="text-gray-400 mb-6">
               Pioneering luxury space tourism from Dubai to the cosmos. Offering unprecedented journeys to the ISS, Moon, and Mars with unmatched service and safety.
             </p>
@@ -40,11 +38,11 @@ const Footer = () => {
           <div>
             <h3 className="font-orbitron font-bold text-lg mb-6">DESTINATIONS</h3>
             <ul className="space-y-3">
-              <li><Link href="/#destinations"><a className="text-gray-400 hover:text-[#00D1FF] transition-colors">International Space Station</a></Link></li>
-              <li><Link href="/#destinations"><a className="text-gray-400 hover:text-[#00D1FF] transition-colors">Lunar Surface</a></Link></li>
-              <li><Link href="/#destinations"><a className="text-gray-400 hover:text-[#00D1FF] transition-colors">Mars Colony</a></Link></li>
-              <li><Link href="/#destinations"><a className="text-gray-400 hover:text-[#00D1FF] transition-colors">Orbital Tours</a></Link></li>
-              <li><Link href="/#destinations"><a className="text-gray-400 hover:text-[#00D1FF] transition-colors">Future Destinations</a></Link></li>
+              <li><button onClick={() => window.location.href = '/#destinations'} className="text-gray-400 hover:text-[#00D1FF] transition-colors">International Space Station</button></li>
+              <li><button onClick={() => window.location.href = '/#destinations'} className="text-gray-400 hover:text-[#00D1FF] transition-colors">Lunar Surface</button></li>
+              <li><button onClick={() => window.location.href = '/#destinations'} className="text-gray-400 hover:text-[#00D1FF] transition-colors">Mars Colony</button></li>
+              <li><button onClick={() => window.location.href = '/#destinations'} className="text-gray-400 hover:text-[#00D1FF] transition-colors">Orbital Tours</button></li>
+              <li><button onClick={() => window.location.href = '/#destinations'} className="text-gray-400 hover:text-[#00D1FF] transition-colors">Future Destinations</button></li>
             </ul>
           </div>
           
@@ -52,11 +50,11 @@ const Footer = () => {
           <div>
             <h3 className="font-orbitron font-bold text-lg mb-6">INFORMATION</h3>
             <ul className="space-y-3">
-              <li><Link href="/about"><a className="text-gray-400 hover:text-[#00D1FF] transition-colors">About Us</a></Link></li>
-              <li><Link href="/safety"><a className="text-gray-400 hover:text-[#00D1FF] transition-colors">Safety Protocols</a></Link></li>
-              <li><Link href="/training"><a className="text-gray-400 hover:text-[#00D1FF] transition-colors">Training Requirements</a></Link></li>
-              <li><Link href="/faq"><a className="text-gray-400 hover:text-[#00D1FF] transition-colors">FAQ</a></Link></li>
-              <li><Link href="/careers"><a className="text-gray-400 hover:text-[#00D1FF] transition-colors">Careers</a></Link></li>
+              <li><button onClick={() => window.location.href = '/about'} className="text-gray-400 hover:text-[#00D1FF] transition-colors">About Us</button></li>
+              <li><button onClick={() => window.location.href = '/safety'} className="text-gray-400 hover:text-[#00D1FF] transition-colors">Safety Protocols</button></li>
+              <li><button onClick={() => window.location.href = '/training'} className="text-gray-400 hover:text-[#00D1FF] transition-colors">Training Requirements</button></li>
+              <li><button onClick={() => window.location.href = '/faq'} className="text-gray-400 hover:text-[#00D1FF] transition-colors">FAQ</button></li>
+              <li><button onClick={() => window.location.href = '/careers'} className="text-gray-400 hover:text-[#00D1FF] transition-colors">Careers</button></li>
             </ul>
           </div>
           
@@ -86,9 +84,9 @@ const Footer = () => {
             &copy; {new Date().getFullYear()} Celestial Voyages. All rights reserved.
           </p>
           <div className="flex space-x-6">
-            <Link href="/terms"><a className="text-gray-500 hover:text-[#00D1FF] text-sm transition-colors">Terms of Service</a></Link>
-            <Link href="/privacy"><a className="text-gray-500 hover:text-[#00D1FF] text-sm transition-colors">Privacy Policy</a></Link>
-            <Link href="/cookies"><a className="text-gray-500 hover:text-[#00D1FF] text-sm transition-colors">Cookies</a></Link>
+            <button onClick={() => window.location.href = '/terms'} className="text-gray-500 hover:text-[#00D1FF] text-sm transition-colors">Terms of Service</button>
+            <button onClick={() => window.location.href = '/privacy'} className="text-gray-500 hover:text-[#00D1FF] text-sm transition-colors">Privacy Policy</button>
+            <button onClick={() => window.location.href = '/cookies'} className="text-gray-500 hover:text-[#00D1FF] text-sm transition-colors">Cookies</button>
           </div>
         </div>
       </div>

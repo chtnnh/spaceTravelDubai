@@ -17,7 +17,7 @@ import { Destination, TravelClass, Accommodation, Experience, Trip } from '@shar
 import { useToast } from '@/hooks/use-toast';
 import useAuth from '@/hooks/useAuth';
 import { apiRequest } from '@/lib/queryClient';
-import { ChevronRight, Check, Calendar, User, Building, Rocket, Sparkles, CreditCard, ArrowRight, ArrowLeft, Clock, MapPin, Star, Gem } from 'lucide-react';
+import { ChevronRight, Check, Calendar, User, Building, Rocket, Sparkles, CreditCard, ArrowRight, ArrowLeft, Clock, MapPin, Star, Gem, Loader2 } from 'lucide-react';
 
 const BookingPage = () => {
   const { user, loading: authLoading } = useAuth();

@@ -284,13 +284,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/trips", isAuthenticated, validateBody(insertTripSchema), async (req, res) => {
+  app.post("/api/trips", isAuthenticated, async (req, res) => {
     try {
       const user = req.user as any;
-      const tripData = { ...req.body, userId: user.id };
+      
+      // Convert string dates to Date objects
+      const tripData = { 
+        ...req.body, 
+        userId: user.id,
+        departureDate: new Date(req.body.departureDate),
+        returnDate: new Date(req.body.returnDate)
+      };
+      
+      try {
+        // Now validate with schema after date conversion
+        insertTripSchema.parse(tripData);
+      } catch (error) {
+        if (error instanceof ZodError) {
+          const validationError = fromZodError(error);
+          return res.status(400).json({ message: validationError.message });
+        } else {
+          return res.status(400).json({ message: "Invalid request body" });
+        }
+      }
+      
       const newTrip = await storage.createTrip(tripData);
       res.status(201).json(newTrip);
     } catch (error) {
+      console.error("Trip creation error:", error);
       res.status(500).json({ message: "Error creating trip" });
     }
   });

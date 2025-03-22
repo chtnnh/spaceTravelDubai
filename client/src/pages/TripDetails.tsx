@@ -98,42 +98,52 @@ const TripDetails = () => {
     if (!trip) return;
 
     const calculateCountdown = () => {
-      const now = new Date();
-      const departureDate = new Date(trip.departureDate);
-      
-      if (now >= departureDate) {
-        // Trip already started
+      try {
+        const now = new Date();
+        const departureDate = new Date(trip.departureDate);
+        
+        if (now >= departureDate) {
+          // Trip already started
+          return {
+            days: 0,
+            hours: 0,
+            minutes: 0,
+            seconds: 0,
+            percent: 100
+          };
+        }
+        
+        const difference = departureDate.getTime() - now.getTime();
+        
+        // Calculate total days between booking and departure - fixed calculation
+        const assumedBookingDate = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000)); // Assume booking was 7 days ago
+        const totalMilliseconds = departureDate.getTime() - assumedBookingDate.getTime();
+        const elapsedMilliseconds = now.getTime() - assumedBookingDate.getTime();
+        const percentComplete = Math.min(100, Math.max(0, (elapsedMilliseconds / totalMilliseconds) * 100));
+        
+        // Calculate time units
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+        
+        return {
+          days,
+          hours,
+          minutes,
+          seconds,
+          percent: percentComplete
+        };
+      } catch (error) {
+        console.error("Error calculating countdown:", error);
         return {
           days: 0,
           hours: 0,
           minutes: 0,
           seconds: 0,
-          percent: 100
+          percent: 0
         };
       }
-      
-      const difference = departureDate.getTime() - now.getTime();
-      
-      // Calculate total days between booking and departure
-      const bookingDate = new Date(trip.departureDate);
-      bookingDate.setDate(bookingDate.getDate() - 90); // Assuming booking was made ~90 days before
-      const totalMilliseconds = departureDate.getTime() - bookingDate.getTime();
-      const elapsedMilliseconds = totalMilliseconds - difference;
-      const percentComplete = (elapsedMilliseconds / totalMilliseconds) * 100;
-      
-      // Calculate time units
-      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-      
-      return {
-        days,
-        hours,
-        minutes,
-        seconds,
-        percent: percentComplete
-      };
     };
     
     const timer = setInterval(() => {
@@ -335,11 +345,13 @@ const TripDetails = () => {
                           <div className="grid grid-cols-2 gap-2 text-sm text-gray-400">
                             <div className="flex items-center">
                               <MapPin className={`${colors.text} mr-2 h-4 w-4`} />
-                              {destination?.distance < 1000 
-                                ? `${destination?.distance} km altitude` 
-                                : destination?.distance < 1000000 
-                                  ? `${(destination?.distance / 1000).toFixed(0)}k km distance` 
-                                  : `${(destination?.distance / 1000000).toFixed(0)}M km distance`
+                              {destination?.distance && destination.distance < 1000 
+                                ? `${destination.distance} km altitude` 
+                                : destination?.distance && destination.distance < 1000000 
+                                  ? `${(destination.distance / 1000).toFixed(0)}k km distance` 
+                                  : destination?.distance
+                                    ? `${(destination.distance / 1000000).toFixed(0)}M km distance`
+                                    : "Distance information unavailable"
                               }
                             </div>
                             <div className="flex items-center">
@@ -412,7 +424,7 @@ const TripDetails = () => {
                                   {formatDate(
                                     new Date(
                                       new Date(trip.departureDate).getTime() - (30 * 24 * 60 * 60 * 1000)
-                                    ).toISOString()
+                                    )
                                   )}
                                 </p>
                               </div>
@@ -428,13 +440,13 @@ const TripDetails = () => {
                                   {formatDate(
                                     new Date(
                                       new Date(trip.departureDate).getTime() - (14 * 24 * 60 * 60 * 1000)
-                                    ).toISOString()
+                                    )
                                   )}
                                   {' '} - {' '}
                                   {formatDate(
                                     new Date(
                                       new Date(trip.departureDate).getTime() - (11 * 24 * 60 * 60 * 1000)
-                                    ).toISOString()
+                                    )
                                   )}
                                 </p>
                               </div>
@@ -525,7 +537,7 @@ const TripDetails = () => {
                               {formatDate(
                                 new Date(
                                   new Date(trip.departureDate).getTime() + (1 * 24 * 60 * 60 * 1000)
-                                ).toISOString()
+                                )
                               )}
                             </div>
                             <div className="bg-[#0A192F] p-4 rounded-lg space-y-3">
@@ -564,7 +576,7 @@ const TripDetails = () => {
                               {formatDate(
                                 new Date(
                                   new Date(trip.departureDate).getTime() + (2 * 24 * 60 * 60 * 1000)
-                                ).toISOString()
+                                )
                               )}
                             </div>
                             <div className="bg-[#0A192F] p-4 rounded-lg space-y-3">
@@ -979,8 +991,8 @@ const TripDetails = () => {
                     <div className="flex justify-between">
                       <span className="text-gray-400">Base Journey Price</span>
                       <span>
-                        ${((destinationObj?.basePrice || 0) * 
-                          (travelClassObj?.priceMultiplier || 100) / 100).toLocaleString()}
+                        ${((destination?.basePrice || 0) * 
+                          (travelClass?.priceMultiplier || 100) / 100).toLocaleString()}
                       </span>
                     </div>
                     

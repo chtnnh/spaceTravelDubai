@@ -37,7 +37,7 @@ const TripDetails = () => {
   const [, navigate] = useLocation();
   const [match, params] = useRoute('/trips/:id');
   const tripId = params?.id ? parseInt(params.id) : null;
-  
+
   // Calculate countdown
   const [countdown, setCountdown] = useState({
     days: 0,
@@ -62,17 +62,17 @@ const TripDetails = () => {
     queryKey: ['/api/destinations'],
     enabled: !!trip,
   });
-  
+
   const { data: travelClasses } = useQuery<TravelClass[]>({
     queryKey: ['/api/travel-classes'],
     enabled: !!trip,
   });
-  
+
   const { data: accommodations } = useQuery<Accommodation[]>({
     queryKey: ['/api/accommodations'],
     enabled: !!trip,
   });
-  
+
   const { data: experiences } = useQuery<Experience[]>({
     queryKey: ['/api/experiences'],
     enabled: !!trip && trip.bookedExperiences !== undefined && (trip.bookedExperiences as number[]).length > 0,
@@ -103,7 +103,7 @@ const TripDetails = () => {
       try {
         const now = new Date();
         const departureDate = new Date(trip.departureDate);
-        
+
         if (now >= departureDate) {
           // Trip already started
           return {
@@ -114,21 +114,21 @@ const TripDetails = () => {
             percent: 100
           };
         }
-        
+
         const difference = departureDate.getTime() - now.getTime();
-        
+
         // Calculate total days between booking and departure - fixed calculation
         const assumedBookingDate = new Date(now.getTime() - (7 * 24 * 60 * 60 * 1000)); // Assume booking was 7 days ago
         const totalMilliseconds = departureDate.getTime() - assumedBookingDate.getTime();
         const elapsedMilliseconds = now.getTime() - assumedBookingDate.getTime();
         const percentComplete = Math.min(100, Math.max(0, (elapsedMilliseconds / totalMilliseconds) * 100));
-        
+
         // Calculate time units
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-        
+
         return {
           days,
           hours,
@@ -147,13 +147,13 @@ const TripDetails = () => {
         };
       }
     };
-    
+
     const timer = setInterval(() => {
       setCountdown(calculateCountdown());
     }, 1000);
-    
+
     setCountdown(calculateCountdown());
-    
+
     return () => clearInterval(timer);
   }, [trip]);
 
@@ -207,7 +207,7 @@ const TripDetails = () => {
   const getColors = () => {
     const destination = getDestination();
     if (!destination) return { text: 'text-[#00D1FF]', bg: 'bg-[#00D1FF]' };
-    
+
     switch (destination.type) {
       case 'ORBITAL':
         return { text: 'text-[#00D1FF]', bg: 'bg-[#00D1FF]' };
@@ -284,7 +284,7 @@ const TripDetails = () => {
   return (
     <div className="min-h-screen bg-[#0A192F]">
       <Navbar />
-      
+
       <StarBg className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Back button */}
@@ -298,7 +298,7 @@ const TripDetails = () => {
               Back to Profile
             </Button>
           </div>
-          
+
           {/* Trip title */}
           <div className="mb-8">
             <h1 className={`font-orbitron text-3xl md:text-4xl font-bold mb-2 ${colors.text}`}>
@@ -319,7 +319,7 @@ const TripDetails = () => {
               </div>
             </div>
           </div>
-          
+
           {/* Main content */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Trip details */}
@@ -331,13 +331,13 @@ const TripDetails = () => {
                   <TabsTrigger value="accommodation" className="font-orbitron">Accommodation</TabsTrigger>
                   <TabsTrigger value="experiences" className="font-orbitron">Experiences</TabsTrigger>
                 </TabsList>
-                
+
                 {/* Overview Tab */}
                 <TabsContent value="overview">
                   <Card className="bg-[#121212] border-gray-800 shadow-xl mb-6">
                     <CardContent className="p-6">
                       <h2 className="font-orbitron text-xl font-bold mb-4">Journey Details</h2>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div className="bg-[#0A192F] p-4 rounded-lg">
                           <h3 className={`font-orbitron font-bold mb-2 ${colors.text}`}>
@@ -362,7 +362,7 @@ const TripDetails = () => {
                             </div>
                           </div>
                         </div>
-                        
+
                         <div className="bg-[#0A192F] p-4 rounded-lg">
                           <h3 className={`font-orbitron font-bold mb-2 ${colors.text}`}>
                             Travel Class
@@ -385,9 +385,9 @@ const TripDetails = () => {
                           </div>
                         </div>
                       </div>
-                      
+
                       <h3 className="font-orbitron text-lg font-bold mb-4">Pre-Journey Preparation</h3>
-                      
+
                       <div className="space-y-4 mb-6">
                         <div className="bg-[#0A192F] p-4 rounded-lg">
                           <h4 className="font-orbitron font-bold mb-2">Health & Fitness Requirements</h4>
@@ -396,7 +396,7 @@ const TripDetails = () => {
                             You'll receive details about required tests and examinations via email.
                           </p>
                         </div>
-                        
+
                         <div className="bg-[#0A192F] p-4 rounded-lg">
                           <h4 className="font-orbitron font-bold mb-2">Training Program</h4>
                           <p className="text-gray-400 text-sm">
@@ -404,7 +404,7 @@ const TripDetails = () => {
                             This includes zero-G adaptation, emergency procedures, and equipment training.
                           </p>
                         </div>
-                        
+
                         <div className="bg-[#0A192F] p-4 rounded-lg">
                           <h4 className="font-orbitron font-bold mb-2">What to Pack</h4>
                           <p className="text-gray-400 text-sm">
@@ -413,7 +413,7 @@ const TripDetails = () => {
                           </p>
                         </div>
                       </div>
-                      
+
                       <div className="bg-[#0A192F] p-4 rounded-lg">
                         <h3 className="font-orbitron text-lg font-bold mb-2">Important Dates</h3>
                         <div className="space-y-3">
@@ -432,7 +432,7 @@ const TripDetails = () => {
                               </div>
                             </div>
                           </div>
-                          
+
                           <div className="flex justify-between items-center">
                             <div className="flex items-center">
                               <CalendarDays className={`${colors.text} mr-3 h-4 w-4`} />
@@ -454,7 +454,7 @@ const TripDetails = () => {
                               </div>
                             </div>
                           </div>
-                          
+
                           <div className="flex justify-between items-center">
                             <div className="flex items-center">
                               <CalendarDays className={`${colors.text} mr-3 h-4 w-4`} />
@@ -464,7 +464,7 @@ const TripDetails = () => {
                               </div>
                             </div>
                           </div>
-                          
+
                           <div className="flex justify-between items-center">
                             <div className="flex items-center">
                               <CalendarDays className={`${colors.text} mr-3 h-4 w-4`} />
@@ -479,13 +479,13 @@ const TripDetails = () => {
                     </CardContent>
                   </Card>
                 </TabsContent>
-                
+
                 {/* Itinerary Tab */}
                 <TabsContent value="itinerary">
                   <Card className="bg-[#121212] border-gray-800 shadow-xl mb-6">
                     <CardContent className="p-6">
                       <h2 className="font-orbitron text-xl font-bold mb-6">Journey Itinerary</h2>
-                      
+
                       <div className="space-y-8">
                         {/* Day 1 */}
                         <div className="relative pl-8 pb-8 border-l border-gray-800">
@@ -527,7 +527,7 @@ const TripDetails = () => {
                             </div>
                           </div>
                         </div>
-                        
+
                         {/* Day 2 */}
                         <div className="relative pl-8 pb-8 border-l border-gray-800">
                           <div className={`absolute left-0 top-0 w-6 h-6 rounded-full ${colors.bg} flex items-center justify-center -translate-x-3`}>
@@ -566,7 +566,7 @@ const TripDetails = () => {
                             </div>
                           </div>
                         </div>
-                        
+
                         {/* Arrival Day */}
                         <div className="relative pl-8 pb-8 border-l border-gray-800">
                           <div className={`absolute left-0 top-0 w-6 h-6 rounded-full ${colors.bg} flex items-center justify-center -translate-x-3`}>
@@ -615,7 +615,7 @@ const TripDetails = () => {
                             </div>
                           </div>
                         </div>
-                        
+
                         {/* Final day */}
                         <div className="relative pl-8">
                           <div className={`absolute left-0 top-0 w-6 h-6 rounded-full ${colors.bg} flex items-center justify-center -translate-x-3`}>
@@ -653,7 +653,7 @@ const TripDetails = () => {
                           </div>
                         </div>
                       </div>
-                      
+
                       <div className="mt-6 bg-[#0A192F]/50 p-4 rounded-lg">
                         <p className="text-sm text-gray-400">
                           <strong>Note:</strong> This is a simplified itinerary. A detailed day-by-day schedule 
@@ -664,7 +664,7 @@ const TripDetails = () => {
                     </CardContent>
                   </Card>
                 </TabsContent>
-                
+
                 {/* Accommodation Tab */}
                 <TabsContent value="accommodation">
                   <Card className="bg-[#121212] border-gray-800 shadow-xl mb-6">
@@ -681,7 +681,7 @@ const TripDetails = () => {
                             )}
                           </div>
                         </div>
-                        
+
                         <div className="md:w-2/3">
                           <h2 className="font-orbitron text-xl font-bold mb-2">{accommodation?.name}</h2>
                           <div className="flex mb-3">
@@ -693,9 +693,9 @@ const TripDetails = () => {
                               />
                             ))}
                           </div>
-                          
+
                           <p className="text-gray-300 mb-6">{accommodation?.description}</p>
-                          
+
                           <div className="grid grid-cols-2 gap-3 mb-6">
                             <div className="flex items-center">
                               <Users className={`${colors.text} mr-2 h-4 w-4`} />
@@ -705,7 +705,7 @@ const TripDetails = () => {
                               <Building className={`${colors.text} mr-2 h-4 w-4`} />
                               <span className="text-sm text-gray-300">{accommodation?.size} sq meters</span>
                             </div>
-                            
+
                             {(accommodation?.amenities as string[])?.map((amenity, index) => (
                               <div key={index} className="flex items-center">
                                 <Star className={`${colors.text} mr-2 h-4 w-4`} />
@@ -713,7 +713,7 @@ const TripDetails = () => {
                               </div>
                             ))}
                           </div>
-                          
+
                           <div className="bg-[#0A192F] p-4 rounded-lg mb-4">
                             <h3 className="font-orbitron font-bold mb-2">Accommodation Features</h3>
                             <ul className="space-y-2 text-sm text-gray-300">
@@ -754,7 +754,7 @@ const TripDetails = () => {
                               </li>
                             </ul>
                           </div>
-                          
+
                           <div className="bg-[#0A192F] p-4 rounded-lg">
                             <h3 className="font-orbitron font-bold mb-2">Important Information</h3>
                             <ul className="space-y-2 text-sm text-gray-300">
@@ -777,13 +777,13 @@ const TripDetails = () => {
                     </CardContent>
                   </Card>
                 </TabsContent>
-                
+
                 {/* Experiences Tab */}
                 <TabsContent value="experiences">
                   <Card className="bg-[#121212] border-gray-800 shadow-xl mb-6">
                     <CardContent className="p-6">
                       <h2 className="font-orbitron text-xl font-bold mb-6">Booked Experiences</h2>
-                      
+
                       {bookedExperiences.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                           {bookedExperiences.map(experience => (
@@ -834,9 +834,9 @@ const TripDetails = () => {
                           </Button>
                         </div>
                       )}
-                      
+
                       <h3 className="font-orbitron text-lg font-bold mb-4">Included Activities</h3>
-                      
+
                       <div className="bg-[#0A192F] p-4 rounded-lg">
                         <div className="space-y-4">
                           <div className="flex items-start">
@@ -858,7 +858,7 @@ const TripDetails = () => {
                               </p>
                             </div>
                           </div>
-                          
+
                           <div className="flex items-start">
                             <Sparkles className="text-[#00D1FF] mr-3 h-5 w-5 flex-shrink-0 mt-0.5" />
                             <div>
@@ -868,7 +868,7 @@ const TripDetails = () => {
                               </p>
                             </div>
                           </div>
-                          
+
                           <div className="flex items-start">
                             <Sparkles className="text-[#00D1FF] mr-3 h-5 w-5 flex-shrink-0 mt-0.5" />
                             <div>
@@ -884,7 +884,7 @@ const TripDetails = () => {
                               </p>
                             </div>
                           </div>
-                          
+
                           {(travelClass?.name === 'Astronaut Class' || travelClass?.name === 'Pioneer Class') && (
                             <div className="flex items-start">
                               <Sparkles className="text-[#00D1FF] mr-3 h-5 w-5 flex-shrink-0 mt-0.5" />
@@ -896,7 +896,7 @@ const TripDetails = () => {
                               </div>
                             </div>
                           )}
-                          
+
                           {travelClass?.name === 'Pioneer Class' && (
                             <div className="flex items-start">
                               <Sparkles className="text-[#00D1FF] mr-3 h-5 w-5 flex-shrink-0 mt-0.5" />
@@ -915,7 +915,7 @@ const TripDetails = () => {
                 </TabsContent>
               </Tabs>
             </div>
-            
+
             {/* Countdown and summary */}
             <div>
               {/* Countdown card */}
@@ -946,7 +946,7 @@ const TripDetails = () => {
                         <div className="text-xs text-gray-500">SECS</div>
                       </div>
                     </div>
-                    
+
                     <div className="mb-2">
                       <Progress value={countdown.percent} className="h-2 bg-[#0A192F]" />
                     </div>
@@ -954,7 +954,7 @@ const TripDetails = () => {
                       Launching from Dubai
                     </div>
                   </div>
-                  
+
                   <div className="mt-6 space-y-4">
                     <div className="flex items-center">
                       <Rocket className="text-[#00D1FF] mr-3 h-5 w-5" />
@@ -963,7 +963,7 @@ const TripDetails = () => {
                         <p className="text-sm text-gray-400">{formatDate(trip.departureDate)}</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <Hotel className="text-[#00D1FF] mr-3 h-5 w-5" />
                       <div>
@@ -971,7 +971,7 @@ const TripDetails = () => {
                         <p className="text-sm text-gray-400">{accommodation?.name}</p>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <Users className="text-[#00D1FF] mr-3 h-5 w-5" />
                       <div>
@@ -982,7 +982,7 @@ const TripDetails = () => {
                   </div>
                 </CardContent>
               </Card>
-              
+
               {/* Trip summary card */}
               <Card className="bg-[#121212] border-gray-800 shadow-xl mb-6">
                 <CardHeader>
@@ -997,7 +997,7 @@ const TripDetails = () => {
                           (travelClass?.priceMultiplier || 100) / 100).toLocaleString()}
                       </span>
                     </div>
-                    
+
                     <div className="flex justify-between">
                       <span className="text-gray-400">Accommodation</span>
                       <span>
@@ -1005,23 +1005,23 @@ const TripDetails = () => {
                           Math.max((getTripDuration() - 2), 1)).toLocaleString()}
                       </span>
                     </div>
-                    
-                    {bookedExperiences.length > 0 && (
+
+                    {bookedExperiences?.length > 0 && (
                       <div className="flex justify-between">
                         <span className="text-gray-400">Experiences ({bookedExperiences.length})</span>
                         <span>
-                          ${bookedExperiences.reduce((sum, exp) => sum + exp.price, 0).toLocaleString()}
+                          ${(bookedExperiences.reduce((sum, exp) => sum + (exp?.price || 0), 0)).toLocaleString()}
                         </span>
                       </div>
                     )}
-                    
+
                     <Separator className="my-2 bg-gray-800" />
-                    
+
                     <div className="flex justify-between font-orbitron font-bold">
                       <span>TOTAL</span>
-                      <span className="text-[#00D1FF]">${trip.totalPrice.toLocaleString()}</span>
+                      <span className="text-[#00D1FF]">${(trip?.totalPrice || 0).toLocaleString()}</span>
                     </div>
-                    
+
                     <div className="pt-4">
                       <Button className={`w-full ${colors.bg}`}>
                         Download Journey Details
@@ -1030,7 +1030,7 @@ const TripDetails = () => {
                   </div>
                 </CardContent>
               </Card>
-              
+
               {/* Need help? */}
               <Card className="bg-[#121212] border-gray-800 shadow-xl">
                 <CardContent className="p-6">
@@ -1054,7 +1054,7 @@ const TripDetails = () => {
           </div>
         </div>
       </StarBg>
-      
+
       <Footer />
     </div>
   );

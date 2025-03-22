@@ -40,7 +40,7 @@ const StarBg = ({ children, className = "" }: StarBgProps) => {
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-[#0A192F] to-transparent"></div>
 
       {/* CSS Animation for stars */}
-      <style jsx>{`
+      <style>{`
         @keyframes starsAnimation {
           0% {transform: rotate(0deg);}
           100% {transform: rotate(360deg);}

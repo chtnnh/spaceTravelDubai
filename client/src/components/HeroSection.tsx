@@ -45,15 +45,16 @@ const HeroSection = () => {
           Experience the final frontier with luxury space journeys to the ISS, Moon, and Mars
         </p>
         <div className="flex flex-col md:flex-row justify-center gap-4">
-          <Link href="#destinations">
-            <a className="px-8 py-3 rounded-md font-orbitron text-lg font-medium bg-[#00D1FF] text-white hover:bg-opacity-80 transition-colors">
-              EXPLORE DESTINATIONS
-            </a>
-          </Link>
+          <button 
+            onClick={() => document.getElementById('destinations')?.scrollIntoView({ behavior: 'smooth' })}
+            className="px-8 py-3 rounded-md font-orbitron text-lg font-medium bg-[#00D1FF] text-white hover:bg-opacity-80 transition-colors"
+          >
+            EXPLORE DESTINATIONS
+          </button>
           <Link href="/booking">
-            <a className="px-8 py-3 rounded-md font-orbitron text-lg font-medium border border-[#00D1FF] text-[#00D1FF] hover:bg-[#00D1FF] hover:text-white transition-colors">
+            <button className="px-8 py-3 rounded-md font-orbitron text-lg font-medium border border-[#00D1FF] text-[#00D1FF] hover:bg-[#00D1FF] hover:text-white transition-colors">
               BOOK YOUR JOURNEY
-            </a>
+            </button>
           </Link>
         </div>
         

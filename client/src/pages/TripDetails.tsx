@@ -73,7 +73,7 @@ const TripDetails = () => {
   
   const { data: experiences } = useQuery<Experience[]>({
     queryKey: ['/api/experiences'],
-    enabled: !!trip && (trip.bookedExperiences as number[]).length > 0,
+    enabled: !!trip && trip.bookedExperiences !== undefined && (trip.bookedExperiences as number[]).length > 0,
   });
 
   // Check if user is authorized
@@ -85,8 +85,11 @@ const TripDetails = () => {
 
   // Check if trip belongs to user
   useEffect(() => {
-    if (trip && user && trip.userId !== user.id) {
-      navigate('/profile');
+    if (trip) {
+      console.log("Trip data:", trip);
+      if (user && trip.userId !== user.id) {
+        navigate('/profile');
+      }
     }
   }, [trip, user, navigate]);
 
@@ -143,8 +146,11 @@ const TripDetails = () => {
   }, [trip]);
 
   // Format date
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | Date) => {
     try {
+      if (dateString instanceof Date) {
+        return format(dateString, 'MMMM d, yyyy');
+      }
       return format(new Date(dateString), 'MMMM d, yyyy');
     } catch (error) {
       return 'Invalid Date';
@@ -403,7 +409,11 @@ const TripDetails = () => {
                               <div>
                                 <p className="font-medium">Medical Examination Deadline</p>
                                 <p className="text-sm text-gray-400">
-                                  {formatDate(new Date(new Date(trip.departureDate).setDate(new Date(trip.departureDate).getDate() - 30)).toISOString())}
+                                  {formatDate(
+                                    new Date(
+                                      new Date(trip.departureDate).getTime() - (30 * 24 * 60 * 60 * 1000)
+                                    ).toISOString()
+                                  )}
                                 </p>
                               </div>
                             </div>
@@ -415,9 +425,17 @@ const TripDetails = () => {
                               <div>
                                 <p className="font-medium">Training Program</p>
                                 <p className="text-sm text-gray-400">
-                                  {formatDate(new Date(new Date(trip.departureDate).setDate(new Date(trip.departureDate).getDate() - 14)).toISOString())}
+                                  {formatDate(
+                                    new Date(
+                                      new Date(trip.departureDate).getTime() - (14 * 24 * 60 * 60 * 1000)
+                                    ).toISOString()
+                                  )}
                                   {' '} - {' '}
-                                  {formatDate(new Date(new Date(trip.departureDate).setDate(new Date(trip.departureDate).getDate() - 11)).toISOString())}
+                                  {formatDate(
+                                    new Date(
+                                      new Date(trip.departureDate).getTime() - (11 * 24 * 60 * 60 * 1000)
+                                    ).toISOString()
+                                  )}
                                 </p>
                               </div>
                             </div>
@@ -504,7 +522,11 @@ const TripDetails = () => {
                           <div>
                             <h3 className="font-orbitron font-bold mb-1">Day 2: Transfer Journey</h3>
                             <div className="text-sm text-gray-400 mb-3">
-                              {formatDate(new Date(new Date(trip.departureDate).setDate(new Date(trip.departureDate).getDate() + 1)).toISOString())}
+                              {formatDate(
+                                new Date(
+                                  new Date(trip.departureDate).getTime() + (1 * 24 * 60 * 60 * 1000)
+                                ).toISOString()
+                              )}
                             </div>
                             <div className="bg-[#0A192F] p-4 rounded-lg space-y-3">
                               <div>
@@ -539,7 +561,11 @@ const TripDetails = () => {
                           <div>
                             <h3 className="font-orbitron font-bold mb-1">Day 3: Arrival at Destination</h3>
                             <div className="text-sm text-gray-400 mb-3">
-                              {formatDate(new Date(new Date(trip.departureDate).setDate(new Date(trip.departureDate).getDate() + 2)).toISOString())}
+                              {formatDate(
+                                new Date(
+                                  new Date(trip.departureDate).getTime() + (2 * 24 * 60 * 60 * 1000)
+                                ).toISOString()
+                              )}
                             </div>
                             <div className="bg-[#0A192F] p-4 rounded-lg space-y-3">
                               <div>

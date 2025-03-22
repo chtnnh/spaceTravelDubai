@@ -94,10 +94,10 @@ const ExperiencesSection = () => {
         
         <div className="mt-12 text-center">
           <Link href="/booking">
-            <a className="inline-flex items-center font-orbitron text-[#00D1FF] hover:underline">
+            <button className="inline-flex items-center font-orbitron text-[#00D1FF] hover:underline bg-transparent border-none cursor-pointer">
               EXPLORE ALL EXPERIENCES
               <ChevronRight className="ml-2 h-4 w-4" />
-            </a>
+            </button>
           </Link>
         </div>
       </div>

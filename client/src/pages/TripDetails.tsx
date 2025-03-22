@@ -191,7 +191,7 @@ const TripDetails = () => {
   const getBookedExperiences = () => {
     if (!trip || !experiences) return [];
     return experiences.filter(exp => 
-      (trip.bookedExperiences as number[]).includes(exp.id)
+      trip.bookedExperiences ? (trip.bookedExperiences as number[]).includes(exp.id) : false
     );
   };
 

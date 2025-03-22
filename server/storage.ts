@@ -212,7 +212,7 @@ export class MemStorage implements IStorage {
       name: "Lunar Expedition",
       description: "Walk in the footsteps of the Apollo astronauts and experience lunar gravity in our state-of-the-art habitats.",
       type: "LUNAR",
-      imageUrl: "https://images.unsplash.com/photo-1514944227608-39256be4ca10?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1522030299830-16b8d3d049fe?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
       distance: 384400,
       duration: 14,
       basePrice: 125000
@@ -222,7 +222,7 @@ export class MemStorage implements IStorage {
       name: "Mars Colony Tour",
       description: "Pioneer the Red Planet experience with exclusive access to the first human settlements on another world.",
       type: "PLANETARY",
-      imageUrl: "https://images.unsplash.com/photo-1575470522418-b88b692b8b9b?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1545156521-77bd85671d30?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
       distance: 225000000,
       duration: 180,
       basePrice: 350000

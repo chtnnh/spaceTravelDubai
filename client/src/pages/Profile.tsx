@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Link } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { useLocation } from 'wouter';
 import { format } from 'date-fns';

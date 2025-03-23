@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": ["/api/*"],
+  "routes": [
+    {
+      "src": "^/api/.*$",
+      "dest": "https://your-backend-api-url.com/api/$1",
+      "continue": true
+    },
+    {
+      "src": "^/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+} 

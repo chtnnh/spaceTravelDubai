@@ -2,11 +2,14 @@ name = "gpec-api-proxy"
 main = "src/index.ts"
 compatibility_date = "2023-03-23"
 
-# Configure routes if you want to deploy to specific routes
+# Configure routes
 [triggers]
 routes = [
-  { pattern = "space.chtnnh.me/api/*", zone_name = "chtnnh.me" }
+  { pattern = "space.chtnnh.me/api/*", zone_name = "chtnnh.me" },
+  { pattern = "gpec-api-proxy.chtnnh.workers.dev/*", zone_name = "workers.dev" },
+  { pattern = "gpec-api-proxy.chtnnh.workers.dev/api/*", zone_name = "workers.dev" }
 ]
+
 # wrangler.toml (wrangler v3.88.0^)
 [observability.logs]
 enabled = true

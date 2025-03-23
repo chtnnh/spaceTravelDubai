@@ -19,8 +19,8 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  // Add API base URL if it's a relative path and we're in production
-  const baseUrl = import.meta.env.PROD ? window.location.origin : '';
+  // Use the worker API URL directly for API requests
+  const baseUrl = url.startsWith('/api/') ? 'https://gpec-api-proxy.chtnnh.workers.dev' : '';
   const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
   
   console.log(`Making ${method} request to ${fullUrl}`);
@@ -47,9 +47,9 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    // Add API base URL if it's a relative path and we're in production
+    // Use the worker API URL directly for API requests
     const url = queryKey[0] as string;
-    const baseUrl = import.meta.env.PROD ? window.location.origin : '';
+    const baseUrl = url.startsWith('/api/') ? 'https://gpec-api-proxy.chtnnh.workers.dev' : '';
     const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
     
     console.log(`Making query request to ${fullUrl}`);

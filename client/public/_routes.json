@@ -1,16 +1,11 @@
 {
   "version": 1,
   "include": ["/*"],
-  "exclude": ["/api/*"],
+  "exclude": [],
   "routes": [
-    {
-      "src": "^/api/(.*)",
-      "dest": "https://gpec-api-proxy.chtnnh.workers.dev/api/$1",
-      "continue": true
-    },
     {
       "src": "^/(.*)",
       "dest": "/index.html"
     }
   ]
-} 
+}

@@ -28,7 +28,11 @@ const useAuth = () => {
     // If unauthorized, return null instead of throwing an error
     queryFn: async ({ queryKey }) => {
       try {
-        const res = await fetch(queryKey[0] as string, {
+        const url = queryKey[0] as string;
+        const baseUrl = 'https://gpec-api-proxy.chtnnh.workers.dev';
+        const fullUrl = `${baseUrl}${url}`;
+        
+        const res = await fetch(fullUrl, {
           credentials: 'include',
         });
         

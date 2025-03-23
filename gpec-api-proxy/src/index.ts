@@ -17,27 +17,28 @@ export default {
 			return handleCorsRequest();
 		}
 		
-		// Process requests directly instead of proxying
+		// Process the path - support both direct /api/* and /* patterns
 		const path = url.pathname;
+		const apiPath = path.replace(/^\/api\//, '/');
 		
-		// Route to the appropriate handler
+		// Route to the appropriate handler based on the path
 		try {
-			if (path.startsWith('/api/destinations')) {
+			if (path.endsWith('/destinations') || path.includes('/destinations/')) {
 				return handleDestinationsRequest(request);
-			} else if (path.startsWith('/api/travel-classes')) {
+			} else if (path.endsWith('/travel-classes') || path.includes('/travel-classes/')) {
 				return handleTravelClassesRequest(request);
-			} else if (path.startsWith('/api/auth')) {
+			} else if (path.includes('/auth')) {
 				return handleAuthRequest(request, path);
-			} else if (path.startsWith('/api/accommodations')) {
+			} else if (path.endsWith('/accommodations') || path.includes('/accommodations/')) {
 				return handleAccommodationsRequest(request);
-			} else if (path.startsWith('/api/experiences')) {
+			} else if (path.endsWith('/experiences') || path.includes('/experiences/')) {
 				return handleExperiencesRequest(request);
-			} else if (path.startsWith('/api/trips')) {
+			} else if (path.endsWith('/trips') || path.includes('/trips/')) {
 				return handleTripsRequest(request, path);
 			}
 			
 			// If no matching route, return 404 with CORS headers
-			return jsonResponse({ message: 'Not Found' }, 404);
+			return jsonResponse({ message: 'Not Found', path: path }, 404);
 		} catch (error) {
 			// Return error with CORS headers
 			console.error('Error handling request:', error);
@@ -168,13 +169,13 @@ async function handleAuthRequest(request, path) {
 	};
 	
 	// Handle different auth endpoints
-	if (path.includes('/api/auth/user')) {
+	if (path.includes('/user')) {
 		// In a real app, you'd check for a valid session/token
 		// For demo, we'll return the mock user
 		if (request.method === 'GET') {
 			return jsonResponse(mockUser);
 		}
-	} else if (path.includes('/api/auth/login')) {
+	} else if (path.includes('/login')) {
 		if (request.method === 'POST') {
 			try {
 				// In a real app, you'd validate credentials
@@ -184,7 +185,7 @@ async function handleAuthRequest(request, path) {
 				return jsonResponse({ message: "Invalid credentials" }, 401);
 			}
 		}
-	} else if (path.includes('/api/auth/register')) {
+	} else if (path.includes('/register')) {
 		if (request.method === 'POST') {
 			try {
 				// In a real app, you'd create a new user
@@ -194,7 +195,7 @@ async function handleAuthRequest(request, path) {
 				return jsonResponse({ message: "Error creating user" }, 500);
 			}
 		}
-	} else if (path.includes('/api/auth/logout')) {
+	} else if (path.includes('/logout')) {
 		if (request.method === 'POST') {
 			// In a real app, you'd invalidate the session
 			return jsonResponse({ message: "Logged out successfully" });
@@ -313,7 +314,7 @@ async function handleTripsRequest(request, path) {
 	const demoUserId = 1;
 	
 	if (request.method === 'GET') {
-		// GET /api/trips - Return user trips
+		// GET /trips - Return user trips
 		const mockTrips = [
 			{
 				id: 1,
@@ -342,7 +343,7 @@ async function handleTripsRequest(request, path) {
 		];
 		
 		// If a specific trip ID is requested
-		const tripMatch = path.match(/\/api\/trips\/(\d+)/);
+		const tripMatch = path.match(/\/trips\/(\d+)/);
 		if (tripMatch) {
 			const tripId = parseInt(tripMatch[1]);
 			const trip = mockTrips.find(t => t.id === tripId);

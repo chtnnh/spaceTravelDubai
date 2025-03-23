@@ -17,31 +17,32 @@ export default {
 			return handleCorsRequest();
 		}
 		
-		// Only process API requests
-		if (!url.pathname.startsWith('/api/')) {
-			return new Response('Not Found', { status: 404 });
-		}
-		
 		// Process requests directly instead of proxying
 		const path = url.pathname;
 		
 		// Route to the appropriate handler
-		if (path.startsWith('/api/destinations')) {
-			return handleDestinationsRequest(request);
-		} else if (path.startsWith('/api/travel-classes')) {
-			return handleTravelClassesRequest(request);
-		} else if (path.startsWith('/api/auth')) {
-			return handleAuthRequest(request, path);
-		} else if (path.startsWith('/api/accommodations')) {
-			return handleAccommodationsRequest(request);
-		} else if (path.startsWith('/api/experiences')) {
-			return handleExperiencesRequest(request);
-		} else if (path.startsWith('/api/trips')) {
-			return handleTripsRequest(request, path);
+		try {
+			if (path.startsWith('/api/destinations')) {
+				return handleDestinationsRequest(request);
+			} else if (path.startsWith('/api/travel-classes')) {
+				return handleTravelClassesRequest(request);
+			} else if (path.startsWith('/api/auth')) {
+				return handleAuthRequest(request, path);
+			} else if (path.startsWith('/api/accommodations')) {
+				return handleAccommodationsRequest(request);
+			} else if (path.startsWith('/api/experiences')) {
+				return handleExperiencesRequest(request);
+			} else if (path.startsWith('/api/trips')) {
+				return handleTripsRequest(request, path);
+			}
+			
+			// If no matching route, return 404 with CORS headers
+			return jsonResponse({ message: 'Not Found' }, 404);
+		} catch (error) {
+			// Return error with CORS headers
+			console.error('Error handling request:', error);
+			return jsonResponse({ message: 'Internal Server Error' }, 500);
 		}
-		// Add other routes as needed
-		
-		return new Response('Not Found', { status: 404 });
 	}
 };
 
@@ -54,6 +55,19 @@ function handleCorsRequest() {
 			"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
 			"Access-Control-Allow-Headers": "Content-Type, Authorization",
 			"Access-Control-Max-Age": "86400"
+		}
+	});
+}
+
+// Helper for JSON responses with CORS headers
+function jsonResponse(data, status = 200) {
+	return new Response(JSON.stringify(data), {
+		status,
+		headers: {
+			'Content-Type': 'application/json',
+			'Access-Control-Allow-Origin': '*',
+			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+			'Access-Control-Allow-Headers': 'Content-Type, Authorization'
 		}
 	});
 }
@@ -355,17 +369,4 @@ async function handleTripsRequest(request, path) {
 	
 	// Method not supported
 	return jsonResponse({ message: "Method not allowed" }, 405);
-}
-
-// Helper for JSON responses with CORS headers
-function jsonResponse(data, status = 200) {
-	return new Response(JSON.stringify(data), {
-		status,
-		headers: {
-			'Content-Type': 'application/json',
-			'Access-Control-Allow-Origin': '*',
-			'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-			'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-		}
-	});
 }

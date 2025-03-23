@@ -4,7 +4,7 @@
   "exclude": ["/api/*"],
   "routes": [
     {
-      "src": "^/api/.*$",
+      "src": "^/api/(.*)",
       "dest": "https://gpec-api-proxy.chtnnh.workers.dev/api/$1",
       "continue": true
     },

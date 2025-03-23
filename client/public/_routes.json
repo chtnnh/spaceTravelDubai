@@ -5,7 +5,7 @@
   "routes": [
     {
       "src": "^/api/.*$",
-      "dest": "https://your-backend-api-url.com/api/$1",
+      "dest": "https://gpec-api-proxy.chtnnh.workers.dev/api/$1",
       "continue": true
     },
     {

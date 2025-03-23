@@ -2,9 +2,28 @@ export interface Env {
 	// Define your environment variables here
 }
 
+// Define ExecutionContext interface if not provided by Cloudflare Workers types
+export interface ExecutionContext {
+	waitUntil(promise: Promise<any>): void;
+	passThroughOnException(): void;
+}
+
 export default {
 	async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
 		const url = new URL(request.url);
+		
+		// Handle CORS preflight requests
+		if (request.method === "OPTIONS") {
+			return new Response(null, {
+				status: 204,
+				headers: {
+					"Access-Control-Allow-Origin": "*",
+					"Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+					"Access-Control-Allow-Headers": "Content-Type, Authorization",
+					"Access-Control-Max-Age": "86400"
+				}
+			});
+		}
 		
 		// Only handle API requests
 		if (!url.pathname.startsWith('/api/')) {
@@ -12,7 +31,7 @@ export default {
 		}
 		
 		// Target your actual backend API
-		const backendUrl = 'https://space.chtnnh.me';
+		const backendUrl = 'https://your-backend-server.com'; // Replace with your actual backend server URL
 		const apiPath = url.pathname;
 		const targetUrl = `${backendUrl}${apiPath}`;
 		
@@ -62,4 +81,4 @@ export default {
 			);
 		}
 	},
-};
+}; 

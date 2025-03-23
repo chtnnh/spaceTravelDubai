@@ -3,7 +3,10 @@ main = "src/index.ts"
 compatibility_date = "2023-03-23"
 
 # Configure routes if you want to deploy to specific routes
-# [triggers]
-# routes = [
-#   { pattern = "space.chtnnh.me/api/*", zone_name = "chtnnh.me" }
-# ] 
+[triggers]
+routes = [
+  { pattern = "space.chtnnh.me/api/*", zone_name = "chtnnh.me" }
+]
+# wrangler.toml (wrangler v3.88.0^)
+[observability.logs]
+enabled = true
